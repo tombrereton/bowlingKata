@@ -1,1 +1,6 @@
 .vs
+_NCrunch_BowlingGameKata
+bin
+obj
+*.ncrunchsolution
+*.ncrunchsolution.*
