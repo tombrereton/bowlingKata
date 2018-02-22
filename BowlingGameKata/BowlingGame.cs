@@ -58,10 +58,10 @@ namespace BowlingGameKata
 
         private static int CalculateStrikeBonus(int[] throws, int index)
         {
-            //if (index == 16 && throws[index + 2] == 10)
-            //{
-            //    return throws[index + 2] + throws[index + 3] + throws[index + 4];
-            //}
+            if (throws[index + 2] == 10)
+            {
+                return throws[index + 2] + throws[index + 4];
+            }
 
             return throws[index + 2] + throws[index + 3];
         }
@@ -96,7 +96,9 @@ namespace BowlingGameKata
         //[TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 10, 0, 10, 10, 10}, 90, TestName = "Given Five Strikes Then Bonus Calculated Correctly")]
         [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10}, 30, TestName = "Given Three Strikes in Last Frame Then Bonus Calculated Correctly")]
         [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 10}, 20, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
-        //[TestCase(new[] {10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 10}, 300, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
+        [TestCase(new[] {10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 30, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
+        [TestCase(new[] {10, 0, 10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 60, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
+        //[TestCase(new[] { 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 10 }, 300, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
         public void GivenGameIsPlayed_ThenReturnExpectedScore(int[] throws, int expectedScore)
         {
             var actualScore = BowlingGame.CalculateScore(throws);
