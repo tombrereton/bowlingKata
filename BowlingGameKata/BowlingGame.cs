@@ -1,8 +1,4 @@
-﻿using System;
-using System.Globalization;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using NUnit.Framework.Internal.Builders;
+﻿using NUnit.Framework;
 
 namespace BowlingGameKata
 {
@@ -58,12 +54,18 @@ namespace BowlingGameKata
 
         private static int CalculateStrikeBonus(int[] throws, int index)
         {
-            if (throws[index + 2] == 10)
+            var firstThrowNextFrame = throws[index + 2];
+
+            if (IsStrike(firstThrowNextFrame))
             {
-                return throws[index + 2] + throws[index + 4];
+                var firstThrowFrameAfterNext = throws[index + 4];
+
+                return firstThrowNextFrame + firstThrowFrameAfterNext;
             }
 
-            return throws[index + 2] + throws[index + 3];
+            var secondThrowNextFrame = throws[index + 3];
+
+            return firstThrowNextFrame + secondThrowNextFrame;
         }
 
         private static bool IsStrike(int firstThrow)
@@ -93,12 +95,12 @@ namespace BowlingGameKata
         [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 1}, 11, TestName = "Given Spare in Last Frame Then Bonus Calculated Correctly")]
         [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 1}, 12, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
         [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 10, 10, 10}, 60, TestName = "Given Three Strikes in Last Frame Then Bonus Calculated Correctly")]
-        //[TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 10, 0, 10, 10, 10}, 90, TestName = "Given Five Strikes Then Bonus Calculated Correctly")]
+        [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 10, 0, 10, 10, 10}, 90, TestName = "Given Five Strikes Then Bonus Calculated Correctly")]
         [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10}, 30, TestName = "Given Three Strikes in Last Frame Then Bonus Calculated Correctly")]
         [TestCase(new[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 10}, 20, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
         [TestCase(new[] {10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 30, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
         [TestCase(new[] {10, 0, 10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 60, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
-        //[TestCase(new[] { 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 10 }, 300, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
+        [TestCase(new[] {10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 10}, 300, TestName = "Given Strike in Last Frame Then Bonus Calculated Correctly")]
         public void GivenGameIsPlayed_ThenReturnExpectedScore(int[] throws, int expectedScore)
         {
             var actualScore = BowlingGame.CalculateScore(throws);
